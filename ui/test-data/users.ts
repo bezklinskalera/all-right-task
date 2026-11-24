@@ -1,4 +1,3 @@
-// Public demo accounts listed on https://www.saucedemo.com login page.
 export const PASSWORD = 'secret_sauce';
 
 export const USERS = {
