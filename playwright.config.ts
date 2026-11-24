@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import { UI_AUTH_FILE } from './ui/utils/auth';
 
 const SAUCEDEMO_URL = 'https://www.saucedemo.com';
+const RESTFUL_BOOKER_URL = 'https://restful-booker.herokuapp.com';
 
 export default defineConfig({
   fullyParallel: true,
@@ -39,6 +40,16 @@ export default defineConfig({
       use: {
         baseURL: SAUCEDEMO_URL,
         testIdAttribute: 'data-test',
+      },
+    },
+
+    /* ---------- API: restful-booker (no browser) ---------- */
+    {
+      name: 'api',
+      testDir: './api/tests',
+      use: {
+        baseURL: RESTFUL_BOOKER_URL,
+        extraHTTPHeaders: { Accept: 'application/json' },
       },
     },
   ],
