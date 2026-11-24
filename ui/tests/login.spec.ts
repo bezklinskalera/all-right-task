@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/login.page';
-import { InventoryPage } from '../../pages/inventory.page';
-import { PASSWORD, USERS } from '../../test-data/users';
+import { LoginPage } from '../pages/login.page';
+import { InventoryPage } from '../pages/inventory.page';
+import { PASSWORD, USERS } from '../test-data/users';
 
 test.use({ storageState: { cookies: [], origins: [] } });
 

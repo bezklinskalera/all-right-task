@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { InventoryPage } from '../../pages/inventory.page';
-import { CartPage } from '../../pages/cart.page';
+import { InventoryPage } from '../pages/inventory.page';
+import { CartPage } from '../pages/cart.page';
 
 const BACKPACK = 'Sauce Labs Backpack';
 const BIKE_LIGHT = 'Sauce Labs Bike Light';

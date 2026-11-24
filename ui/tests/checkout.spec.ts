@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { InventoryPage } from '../../pages/inventory.page';
-import { CartPage } from '../../pages/cart.page';
-import { CheckoutPage, CustomerInfo } from '../../pages/checkout.page';
+import { InventoryPage } from '../pages/inventory.page';
+import { CartPage } from '../pages/cart.page';
+import { CheckoutPage, CustomerInfo } from '../pages/checkout.page';
 
 const BACKPACK = 'Sauce Labs Backpack';
 const BOLT_TSHIRT = 'Sauce Labs Bolt T-Shirt';

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { InventoryPage, SortOption } from '../../pages/inventory.page';
-import { parsePrice } from '../../utils/price';
+import { InventoryPage, SortOption } from '../pages/inventory.page';
+import { parsePrice } from '../utils/price';
 
 test.beforeEach(async ({ page }) => {
     await new InventoryPage(page).goto();
