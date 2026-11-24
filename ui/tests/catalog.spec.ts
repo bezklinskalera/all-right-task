@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { InventoryPage, SortOption } from '../../pages/inventory.page';
-import { parsePrice } from '../../utils/price';
+import { InventoryPage, SortOption } from '../pages/inventory.page';
+import { parsePrice } from '../utils/price';
 
 test.beforeEach(async ({ page }) => {
     await new InventoryPage(page).goto();
@@ -27,6 +27,14 @@ test.describe('Catalog', () => {
 
         expect(sources).not.toContain(null);
         expect(new Set(sources).size).toBe(sources.length);
+    });
+
+    test('should load every product image', async ({ page }) => {
+        const inventoryPage = new InventoryPage(page);
+
+        await expect(inventoryPage.itemImages.first()).toBeVisible();
+
+        await expect.poll(() => inventoryPage.getNotLoadedImages()).toEqual([]);
     });
 });
 

@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import { HeaderComponent } from './header.component';
+import { ProductDetails, readProductDetails } from '../utils/product';
 
 export type SortOption = 'az' | 'za' | 'lohi' | 'hilo';
 
@@ -43,6 +44,10 @@ export class InventoryPage {
         return this.items.filter({ hasText: name });
     }
 
+    public async getProductDetails(name: string): Promise<ProductDetails> {
+        return readProductDetails(this.getItemByName(name));
+    }
+
     public getAddToCartButtonByName(name: string) {
         return this.getItemByName(name).getByRole('button', { name: 'Add to cart' });
     }
@@ -67,6 +72,14 @@ export class InventoryPage {
 
     public async getImageSources(): Promise<(string | null)[]> {
         return this.itemImages.evaluateAll(images => images.map(image => image.getAttribute('src')));
+    }
+
+    public async getNotLoadedImages(): Promise<(string | null)[]> {
+        return this.itemImages.evaluateAll(images =>
+            (images as HTMLImageElement[])
+                .filter(image => !image.complete || image.naturalWidth === 0)
+                .map(image => image.getAttribute('src')),
+        );
     }
 
     public async addToCart(...names: string[]) {

@@ -1,8 +1,8 @@
 import { test as setup, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/login.page';
-import { InventoryPage } from '../../pages/inventory.page';
-import { PASSWORD, USERS } from '../../test-data/users';
-import { UI_AUTH_FILE } from '../../utils/auth';
+import { LoginPage } from '../pages/login.page';
+import { InventoryPage } from '../pages/inventory.page';
+import { PASSWORD, USERS } from '../test-data/users';
+import { UI_AUTH_FILE } from '../utils/auth';
 
 setup('authenticate as standard_user', async ({ page }) => {
     const loginPage = new LoginPage(page);

@@ -1,8 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
-import { UI_AUTH_FILE } from './utils/auth';
+import { UI_AUTH_FILE } from './ui/utils/auth';
+
+const SAUCEDEMO_URL = 'https://www.saucedemo.com';
 
 export default defineConfig({
-  testDir: './tests',
   fullyParallel: true,
   /* Fail the build on CI if test.only was left in the source code. */
   forbidOnly: !!process.env.CI,
@@ -12,28 +13,33 @@ export default defineConfig({
 
   use: {
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    /* saucedemo marks elements with data-test="..." — lets us use getByTestId(). */
-    testIdAttribute: 'data-test',
   },
 
   /* ui-chromium goes first so Playwright UI mode selects it by default;
-     setup still runs before it via `dependencies`. */
+     ui-setup still runs before it via `dependencies`. */
   projects: [
+    /* ---------- UI: saucedemo ---------- */
     {
       name: 'ui-chromium',
-      testDir: './tests/ui',
+      testDir: './ui/tests',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'https://www.saucedemo.com',
+        baseURL: SAUCEDEMO_URL,
         storageState: UI_AUTH_FILE,
+        screenshot: 'only-on-failure',
+        /* saucedemo marks elements with data-test="..." — lets us use getByTestId(). */
+        testIdAttribute: 'data-test',
       },
-      dependencies: ['setup'],
+      dependencies: ['ui-setup'],
     },
     {
-      name: 'setup',
+      name: 'ui-setup',
+      testDir: './ui/tests',
       testMatch: /.*\.setup\.ts/,
-      use: { baseURL: 'https://www.saucedemo.com' },
+      use: {
+        baseURL: SAUCEDEMO_URL,
+        testIdAttribute: 'data-test',
+      },
     },
   ],
 });
