@@ -37,12 +37,13 @@ test.describe('Dynamic Catalog: lazy load', () => {
     test('should show visible products with name, price and image', async ({ page }) => {
         const lazyLoadPage = new LazyLoadPage(page);
 
-        await expect(lazyLoadPage.itemNames.first()).toBeVisible();
-        const count = await lazyLoadPage.itemNames.count();
+        await expect(lazyLoadPage.renderedCards.first()).toBeVisible();
 
-        await expect(lazyLoadPage.itemNames).toHaveText(Array(count).fill(/\S/));
-        await expect(lazyLoadPage.itemPrices).toHaveText(Array(count).fill(PRICE));
-        await expect(lazyLoadPage.itemImages).toHaveCount(count);
+        for (const card of await lazyLoadPage.renderedCards.all()) {
+            await expect(lazyLoadPage.getNameIn(card)).toHaveText(/\S/);
+            await expect(lazyLoadPage.getPriceIn(card)).toHaveText(PRICE);
+            await expect(lazyLoadPage.getImageIn(card)).toBeVisible();
+        }
     });
 
     test('should render product content when a card is scrolled into view', async ({ page }) => {

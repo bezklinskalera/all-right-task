@@ -28,6 +28,7 @@ test.describe('Booking: negative', () => {
         booking = buildBooking();
 
         const response = await client.createBooking(booking);
+
         expect(response.status()).toBe(200);
         bookingId = ((await response.json()) as CreatedBooking).bookingid;
     });
@@ -43,6 +44,7 @@ test.describe('Booking: negative', () => {
         expect(response.status()).toBe(403);
 
         const current = await client.getBooking(bookingId);
+
         expect(await current.json()).toEqual(booking);
     });
 
@@ -52,6 +54,7 @@ test.describe('Booking: negative', () => {
         expect(response.status()).toBe(403);
 
         const current = await client.getBooking(bookingId);
+
         expect(current.status()).toBe(200);
     });
 });

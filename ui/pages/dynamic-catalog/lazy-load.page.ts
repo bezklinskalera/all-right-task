@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { HeaderComponent } from '../header.component';
 
 export class LazyLoadPage {
@@ -17,16 +17,20 @@ export class LazyLoadPage {
         return this.container.locator(':scope > [data-test^="lazy-load-item-"]');
     }
 
-    public get itemNames() {
-        return this.container.locator('[data-test^="lazy-load-item-"][data-test$="-name"]');
+    public get renderedCards() {
+        return this.cards.filter({ hasNot: this.page.locator('[data-test$="-placeholder"]') });
     }
 
-    public get itemPrices() {
-        return this.container.locator('[data-test^="lazy-load-item-"][data-test$="-price"]');
+    public getNameIn(card: Locator) {
+        return card.locator('[data-test$="-name"]');
     }
 
-    public get itemImages() {
-        return this.container.locator('[data-test^="lazy-load-item-"][data-test$="-img"]');
+    public getPriceIn(card: Locator) {
+        return card.locator('[data-test$="-price"]');
+    }
+
+    public getImageIn(card: Locator) {
+        return card.locator('[data-test$="-img"]');
     }
 
     public get sentinel() {
