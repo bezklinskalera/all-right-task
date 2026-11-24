@@ -1,6 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-
-export const UI_AUTH_FILE = 'playwright/.auth/standard-user.json';
+import { UI_AUTH_FILE } from './utils/auth';
 
 export default defineConfig({
   testDir: './tests',
@@ -18,12 +17,9 @@ export default defineConfig({
     testIdAttribute: 'data-test',
   },
 
+  /* ui-chromium goes first so Playwright UI mode selects it by default;
+     setup still runs before it via `dependencies`. */
   projects: [
-    {
-      name: 'setup',
-      testMatch: /.*\.setup\.ts/,
-      use: { baseURL: 'https://www.saucedemo.com' },
-    },
     {
       name: 'ui-chromium',
       testDir: './tests/ui',
@@ -33,6 +29,11 @@ export default defineConfig({
         storageState: UI_AUTH_FILE,
       },
       dependencies: ['setup'],
+    },
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+      use: { baseURL: 'https://www.saucedemo.com' },
     },
   ],
 });
