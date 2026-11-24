@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { BookingClient } from '../clients/booking.client';
-import { buildBooking } from '../test-data/booking';
+import { buildBooking, buildUpdatedBooking, getUnchangedFields } from '../test-data/booking';
 import { ADMIN } from '../test-data/credentials';
 import { CreatedBooking } from '../types/booking';
 
@@ -9,13 +9,7 @@ test.describe('Booking flow', () => {
     test('should create, update and delete a booking', async ({ request }) => {
         const client = new BookingClient(request);
         const booking = buildBooking();
-        const updatedBooking = buildBooking({
-            lastname: 'Updated',
-            totalprice: 300,
-            depositpaid: false,
-            bookingdates: { checkin: '2027-02-01', checkout: '2027-02-05' },
-            additionalneeds: 'Late checkout',
-        });
+        const updatedBooking = buildUpdatedBooking(booking);
 
         let token = '';
         let bookingId = 0;
@@ -47,6 +41,8 @@ test.describe('Booking flow', () => {
         });
 
         await test.step('update the booking', async () => {
+            expect(getUnchangedFields(booking, updatedBooking)).toEqual([]);
+
             const response = await client.updateBooking(bookingId, updatedBooking, token);
 
             expect(response.status()).toBe(200);
