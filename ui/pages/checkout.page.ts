@@ -16,8 +16,6 @@ export class CheckoutPage {
         return new HeaderComponent(this.page);
     }
 
-    // Step one: customer information
-
     public get firstNameInput() {
         return this.page.getByTestId('firstName');
     }
@@ -38,7 +36,13 @@ export class CheckoutPage {
         return this.page.getByTestId('error');
     }
 
-    // Step two: overview
+    public get errorCloseButton() {
+        return this.page.getByTestId('error-button');
+    }
+
+    public get cancelButton() {
+        return this.page.getByTestId('cancel');
+    }
 
     public get itemNames() {
         return this.page.getByTestId('inventory-item-name');
@@ -64,10 +68,12 @@ export class CheckoutPage {
         return this.page.getByTestId('finish');
     }
 
-    // Complete
-
     public get completeHeader() {
         return this.page.getByTestId('complete-header');
+    }
+
+    public get backHomeButton() {
+        return this.page.getByTestId('back-to-products');
     }
 
     public async fillCustomerInfo({ firstName, lastName, postalCode }: CustomerInfo) {
