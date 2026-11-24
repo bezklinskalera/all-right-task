@@ -1,5 +1,7 @@
 import { Page } from '@playwright/test';
 
+export type DynamicCatalogView = 'lazy-load' | 'spinner' | 'slider';
+
 export class HeaderComponent {
 
     constructor(private page: Page) {}
@@ -20,6 +22,14 @@ export class HeaderComponent {
         return this.page.getByTestId('logout-sidebar-link');
     }
 
+    public get dynamicCatalogLink() {
+        return this.page.getByTestId('dynamic-catalog-sidebar-link');
+    }
+
+    public getDynamicCatalogViewLink(view: DynamicCatalogView) {
+        return this.page.getByTestId(`dynamic-catalog-${view}-link`);
+    }
+
     public async openCart() {
         await this.cartLink.click();
     }
@@ -27,5 +37,11 @@ export class HeaderComponent {
     public async logout() {
         await this.menuButton.click();
         await this.logoutLink.click();
+    }
+
+    public async openDynamicCatalog(view: DynamicCatalogView) {
+        await this.menuButton.click();
+        await this.dynamicCatalogLink.click();
+        await this.getDynamicCatalogViewLink(view).click();
     }
 }
