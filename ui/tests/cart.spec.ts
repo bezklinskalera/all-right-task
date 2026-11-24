@@ -16,6 +16,10 @@ test.describe('Cart', () => {
         const cartPage = new CartPage(page);
 
         const names = await inventoryPage.getFirstAndLastNames();
+        const catalogProducts = [];
+        for (const name of names) {
+            catalogProducts.push(await inventoryPage.getProductDetails(name));
+        }
 
         await inventoryPage.addToCart(...names);
 
@@ -23,6 +27,9 @@ test.describe('Cart', () => {
 
         await inventoryPage.header.openCart();
         await expect(cartPage.itemNames).toHaveText(names);
+        await expect(cartPage.itemQuantities).toHaveText(Array(names.length).fill('1'));
+
+        expect(await cartPage.getProductDetails()).toEqual(catalogProducts);
     });
 
     test('should remove the first and the last product on the catalog page', async ({ page }) => {

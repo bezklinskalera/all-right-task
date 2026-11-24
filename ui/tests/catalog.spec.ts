@@ -28,6 +28,14 @@ test.describe('Catalog', () => {
         expect(sources).not.toContain(null);
         expect(new Set(sources).size).toBe(sources.length);
     });
+
+    test('should load every product image', async ({ page }) => {
+        const inventoryPage = new InventoryPage(page);
+
+        await expect(inventoryPage.itemImages.first()).toBeVisible();
+
+        await expect.poll(() => inventoryPage.getNotLoadedImages()).toEqual([]);
+    });
 });
 
 test.describe('Sorting', () => {
