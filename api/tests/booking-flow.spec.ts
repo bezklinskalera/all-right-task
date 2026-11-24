@@ -19,7 +19,7 @@ test.describe('Booking flow', () => {
             const body = await response.json();
 
             expect(response.status()).toBe(200);
-            expect(body.token).toEqual(expect.any(String));
+            expect(body.token).toMatch(/^\S+$/);
             token = body.token;
         });
 
@@ -28,7 +28,8 @@ test.describe('Booking flow', () => {
             const body: CreatedBooking = await response.json();
 
             expect(response.status()).toBe(200);
-            expect(body.bookingid).toEqual(expect.any(Number));
+            expect(Number.isInteger(body.bookingid)).toBe(true);
+            expect(body.bookingid).toBeGreaterThan(0);
             expect(body.booking).toEqual(booking);
             bookingId = body.bookingid;
         });
