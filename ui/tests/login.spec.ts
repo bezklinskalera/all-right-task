@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
 import { InventoryPage } from '../pages/inventory.page';
 import { PASSWORD, USERS } from '../test-data/users';
+import { INVALID_LOGIN_CASES, LOGIN_ERRORS } from '../test-data/login-cases';
 
 test.use({ storageState: { cookies: [], origins: [] } });
 
@@ -41,34 +42,11 @@ test.describe('Login', () => {
 
         await loginPage.login(USERS.lockedOut, PASSWORD);
 
-        await expect(loginPage.errorMessage).toHaveText(
-            'Epic sadface: Sorry, this user has been locked out.',
-        );
+        await expect(loginPage.errorMessage).toHaveText(LOGIN_ERRORS.lockedOut);
         await expect(page).not.toHaveURL(/inventory\.html/);
     });
 
-    const invalidCredentials = [
-        {
-            name: 'wrong password',
-            username: USERS.standard,
-            password: 'wrong_password',
-            error: 'Epic sadface: Username and password do not match any user in this service',
-        },
-        {
-            name: 'empty username',
-            username: '',
-            password: PASSWORD,
-            error: 'Epic sadface: Username is required',
-        },
-        {
-            name: 'empty password',
-            username: USERS.standard,
-            password: '',
-            error: 'Epic sadface: Password is required',
-        },
-    ];
-
-    for (const { name, username, password, error } of invalidCredentials) {
+    for (const { name, username, password, error } of INVALID_LOGIN_CASES) {
         test(`should show an error for ${name}`, async ({ page }) => {
             const loginPage = new LoginPage(page);
 
